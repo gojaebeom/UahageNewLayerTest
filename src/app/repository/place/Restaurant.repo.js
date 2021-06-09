@@ -1,42 +1,44 @@
 "use strict";
 const { queryBuilder } = require("../../../config/Database");
 
-// 북마크 관계 확인 : 있다면 id 리턴
+
+//? 북마크 관계 확인 : 있다면 id 리턴
 exports.validateBookmark = ( userId, placeId ) => {
     const query = `
     select id from p_restaurant_bookmarks
     where user_id = ${userId} and restaurant_id = ${placeId};
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rowCount !== 0 ? data.rows[0] : 0 }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true,  message: "Bookmark validate success", result : data.rowCount !== 0 ? data.rows[0] : 0 }))
+    .catch( error => ({ success: false, message: "Bookmark validate error", error : error }));
 }
 
-// 북마크 관계 생성
+
+//? 북마크 관계 생성
 exports.storeBookmark = ( userId, placeId ) => {
     const query = `
     insert into p_restaurant_bookmarks(user_id , restaurant_id)
     values (${userId}, ${placeId});
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Bookmark store success", result : {isBookmarked: true} }))
+    .catch( error => ({ success: false, message: "Bookmark store false", error : error }));
 }
 
-// 북마크 관계 제거
+
+//? 북마크 관계 제거
 exports.deleteBookmark = ( bookmarkId ) => {
     const query = `
     delete from p_restaurant_bookmarks
     where id = ${bookmarkId}
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Bookmark delete success", result : {isBookmarked: false} }))
+    .catch( error => ({ success: false, message: "Bookmark delete false", error : error }));
 }
-// 모든 장소 보기
-// 검색 조건에 따라
-// 북마크한 장소들 보기
-// 시설 정보 조건에 맞는 장소 보기
+
+
+//? 모든 장소 보기
 exports.findAll =  ({
     lat, 
     lon, 
@@ -94,14 +96,15 @@ exports.findAll =  ({
     `;
     console.log(query);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows} }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
+    .catch( error => ({ success: false, message: "Get Restaurant list false", error : error }));
 }
 
-// 모든 장소 보기(10개 씩)
-// 검색 조건에 따라
-// 북마크한 장소들 보기
-// 시설 정보 조건에 맞는 장소 보기
+
+//? 모든 장소 보기(10개 씩)
+//? 검색 조건에 따라
+//? 북마크한 장소들 보기
+//? 시설 정보 조건에 맞는 장소 보기
 exports.findByOptions = ({
     lat, 
     lon, 
@@ -161,11 +164,12 @@ exports.findByOptions = ({
 
     console.log(query);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows} }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
+    .catch( error => ({ success: false, message: "Get Restaurant list false", error : error }));
 }
 
-// 장소 상세보기
+
+//? 장소 상세보기
 exports.findOne = ( placeId ) => {
     const query = `
     select
@@ -192,11 +196,12 @@ exports.findOne = ( placeId ) => {
         pr.id = ${ placeId };
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rows }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Restaurant detail success", result : data.rows }))
+    .catch( error => ({ success: false, message: "Get Restaurant detail false", error : error }));
 }
 
-// 리뷰 리스트 보기
+
+//? 리뷰 리스트 보기
 exports.findReviewsByOption = ( placeId, option ) => {
     const query = `
     select
@@ -226,11 +231,12 @@ exports.findReviewsByOption = ( placeId, option ) => {
     `;
     console.log(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows } }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Restaurant Review list success", result : { total : data.rowCount, data : data.rows } }))
+    .catch( error => ({ success: false, message: "Get Restaurant Review list false", error : error }));
 }
 
-// 리뷰 상세 보기
+
+//? 리뷰 상세 보기
 exports.findOneReview = ( reviewId ) =>{
     const query = `
     select
@@ -252,11 +258,12 @@ exports.findOneReview = ( reviewId ) =>{
     `;
     console.log(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rows[0]  }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Restaurant Review detail success", result : data.rows[0]  }))
+    .catch( error => ({ success: false, message: "Get Restaurant Review detail false", error : error }));
 }
 
-// 사진 리뷰 모아보기
+
+//? 사진 리뷰 모아보기
 exports.findReviewImages = ( placeId ) => {
     const query = `
     select prr.id, prri.image_path
@@ -268,22 +275,24 @@ exports.findReviewImages = ( placeId ) => {
     order by prr.created_at desc;
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows } }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Restaurant Review Image list success", result : { total : data.rowCount, data : data.rows } }))
+    .catch( error => ({ success: false, message: "Get Restaurant Review Image list false", error : error }));
 }
 
-// 리뷰 이미지 PK 구하기
+
+//? 리뷰 이미지 PK 구하기
 exports.deleteReviewImage = ( imagePath ) => {
     const query = `
     delete from p_restaurant_review_images 
     where image_path = '${ imagePath }'`;
 
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows } }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "delete Restaurant Review Image success", result : { total : data.rowCount, data : data.rows } }))
+    .catch( error => ({ success: false, message: "delete Restaurant Review Image false", error : error }));
 }   
 
-// 리뷰 저장 (이미지가 있는 경우)
+
+//? 리뷰 저장 (이미지가 있는 경우)
 exports.storeReviewWithImages = ({
     images,
     userId,
@@ -325,11 +334,12 @@ exports.storeReviewWithImages = ({
     `; 
     console.log(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "store Restaurant Review success", result : true }))
+    .catch( error => ({ success: false, message: "store Restaurant Review false",  error : error }));
 }
 
-// 리뷰 저장
+
+//? 리뷰 저장
 exports.storeReview = ({
     userId, 
     placeId,
@@ -362,10 +372,12 @@ exports.storeReview = ({
     `; 
     console.log(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "store Restaurant Review success",  result : true }))
+    .catch( error => ({ success: false, message: "store Restaurant Review false",  error : error }));
 }
 
+
+//? 리뷰 이미지 저장
 exports.storeReviewImages = (reviewId, images) => {
     const query = `
         insert into p_restaurant_review_images(
@@ -379,11 +391,12 @@ exports.storeReviewImages = (reviewId, images) => {
     `; 
     console.log(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "store Restaurant Review Images success",  result : true }))
+    .catch( error => ({ success: false, message: "store Restaurant Review Images false", error : error }));
 }
 
-// 리뷰 수정
+
+//? 리뷰 수정
 exports.updateReview = ( 
     reviewId, 
     {
@@ -407,11 +420,12 @@ exports.updateReview = (
     `; 
     console.log(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Update Restaurant Review success", result : true }))
+    .catch( error => ({ success: false, message: "Update Restaurant Review false",  error : error }));
 }
 
-// 리뷰 삭제 
+
+//? 리뷰 삭제 
 exports.delete = ( reviewId ) => {
     const query = `
     delete from p_restaurant_reviews
@@ -420,11 +434,12 @@ exports.delete = ( reviewId ) => {
     console.log(`=== Query ===\n${query}\n=== End Query ===`);
 
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "delete Restaurant Review success",  result : true }))
+    .catch( error => ({ success: false, message: "delete Restaurant Review false", error : error }));
 }
 
-// 리뷰 신고
+
+//? 리뷰 신고
 exports.storeReviewDeclarations = ( body ) => {
     const { categoryId, reviewId, userId, desc } = body;
     const query = `
@@ -438,6 +453,6 @@ exports.storeReviewDeclarations = ( body ) => {
     `;
     console.log(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "store Restaurant Review Declaration success", result : true }))
+    .catch( error => ({ success: false, message: "store Restaurant Review Declaration false",  error : error }));
 }

@@ -10,8 +10,8 @@ exports.findAll = () => {
 
     console.log(query);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows} }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Hospital list success", result : { total : data.rowCount, data : data.rows} }))
+    .catch( error => ({ success: false, message: "Get Hospital list false", error : error }));
 }
 
 // 모든 장소 보기(10개 씩)
@@ -25,8 +25,8 @@ exports.findByOptions = (pageNumber,lat,lon) => {
 
     console.log(query);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows} }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Hospital list success", result : { total : data.rowCount, data : data.rows} }))
+    .catch( error => ({ success: false, message: "Get Hospital list false", error : error }));
 }
 
 // 장소 상세보기
@@ -37,6 +37,6 @@ exports.findOne = ( placeId ) => {
     where id = ${placeId};
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rows }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get Hospital detail success", result : data.rows }))
+    .catch( error => ({ success: false, message: "Get Hospital detail false", error : error }));
 }

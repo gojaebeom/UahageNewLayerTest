@@ -10,8 +10,8 @@ exports.findAll = () => {
 
     console.log(query);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows} }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true, message: "Get KidCafe list success", result : { total : data.rowCount, data : data.rows} }))
+    .catch( error => ({ success: false,  message: "Get KidCafe list false", error : error }));
 }
 
 // 모든 장소 보기(10개 씩)
@@ -25,8 +25,8 @@ exports.findByOptions = (pageNumber,lat,lon) => {
 
     console.log(query);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows} }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true,  message: "Get KidCafe list success", result : { total : data.rowCount, data : data.rows} }))
+    .catch( error => ({ success: false,  message: "Get KidCafe list false", error : error }));
 }
 
 // 장소 상세보기
@@ -34,9 +34,8 @@ exports.findOne = ( placeId   ) => {
     const query = `
     select id, name, address, phone, admission_fee 
     from p_kid_cafes
-    where id = ${placeId};
-    `;
+    where id = ${placeId};`;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rows }))
-    .catch( error => ({ success: false, error : error }));
+    .then( data => ({ success: true,  message: "Get KidCafe detail success", result : data.rows }))
+    .catch( error => ({ success: false,  message: "Get KidCafe detail false", error : error }));
 }

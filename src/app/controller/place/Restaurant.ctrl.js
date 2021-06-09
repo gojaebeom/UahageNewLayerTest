@@ -5,21 +5,21 @@ const service = require("../../service/place/Restaurant.service");
 exports.findByOptions = async (req, res) => {
     const options = req.query;
 
-    const { success, result, error } = await service.findByOptions( options );
+    const { success, message, result, error } = await service.findByOptions( options );
 
     success ? 
-    res.status(200).json({ message : "status ok",  data : result }) : 
-    res.status(500).json({ message : "server error", error : error }); 
+    res.status(200).json({ message : message,  data : result }) : 
+    res.status(500).json({ message : message, error : error }); 
 }
 
 // 장소 상세보기
 exports.findOne = async (req, res) => {
     const placeId = req.params.id;
 
-    const { success, result, error } = await service.findOne( placeId );
+    const { success, message, result, error } = await service.findOne( placeId );
     
     success ? 
-    res.status(200).json({ message : "Get place detail success",  data : result }) : 
-    res.status(500).json({ message : "Get place detail false", error : error }); 
+    res.status(200).json({ message : message,  data : result }) : 
+    res.status(500).json({ message : message, error : error }); 
 }
 

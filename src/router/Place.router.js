@@ -15,7 +15,7 @@ const kidCafeController = require("../app/controller/place/KidCafe.ctrl");
 const { s3MultiFileMiddleware } = require("../middleware/S3.mdw");
 
 const { Router } = require("express");
-const { tokenMiddleware } = require("../middleware/Token.mdw");
+const { authMiddleware } = require("../middleware/Auth.mdw");
 const router = Router();
 
 
@@ -23,62 +23,62 @@ const router = Router();
 //? rstr
 router.post(
     "/api/places/restaurants/bookmarks", 
-    tokenMiddleware,
+    authMiddleware,
     restaurantBookmarkController.bookmarkToogle
 );
 router.get(
     "/api/places/restaurants", 
-    tokenMiddleware,
+    authMiddleware,
     restaurantController.findByOptions
 );
 router.get(
     "/api/places/restaurants/:id", 
-    tokenMiddleware,
+    authMiddleware,
     restaurantController.findOne
 );
 
 //? rstr review
 router.get(
     "/api/places/restaurants/:id/reviews", 
-    tokenMiddleware,
+    authMiddleware,
     restaurantReviewController.findByOptions
 );
 router.get(
     "/api/places/restaurants/reviews/:id", 
-    tokenMiddleware,
+    authMiddleware,
     restaurantReviewController.findOne
 );
 router.post(
     "/api/places/restaurants/reviews",
-    tokenMiddleware,
+    authMiddleware,
     s3MultiFileMiddleware,
     restaurantReviewController.store
 );
 router.put(
     "/api/places/restaurants/reviews/:id",
-    tokenMiddleware,
+    authMiddleware,
     s3MultiFileMiddleware,
     restaurantReviewController.update
 );
 router.delete(
     "/api/places/restaurants/reviews/:id",
-    tokenMiddleware,
+    authMiddleware,
     restaurantReviewController.delete
 );
 router.post(
     "/api/places/restaurants/reviews/decl",
-    tokenMiddleware,
+    authMiddleware,
     restaurantReviewDeclController.store
 );
 // Place-dayCareCenter
 router.get(
     "/api/places/day-care-centers", 
-    tokenMiddleware,
+    authMiddleware,
     dayCareCenterController.findByOptions
 );
 router.get(
     "/api/places/day-care-centers/:id",
-    tokenMiddleware,
+    authMiddleware,
     dayCareCenterController.findOne
 );
 
@@ -87,12 +87,12 @@ router.get(
 // Place-hospital
 router.get(
     "/api/places/hospitals", 
-    tokenMiddleware,
+    authMiddleware,
     hospitalController.findByOptions
 );
 router.get(
     "/api/places/hospitals/:id", 
-    tokenMiddleware,
+    authMiddleware,
     hospitalController.findOne
 );
 
@@ -101,12 +101,12 @@ router.get(
 // Place-experienceCenter
 router.get(
     "/api/places/experience-centers", 
-    tokenMiddleware,
+    authMiddleware,
     experienceCenterController.findByOptions
 );
 router.get(
     "/api/places/experience-centers/:id", 
-    tokenMiddleware,
+    authMiddleware,
     experienceCenterController.findOne
 );
 
@@ -115,12 +115,12 @@ router.get(
 // Place-kidCafe
 router.get(
     "/api/places/kid-cafes", 
-    tokenMiddleware,
+    authMiddleware,
     kidCafeController.findByOptions
 );
 router.get(
     "/api/places/kid-cafes/:id", 
-    tokenMiddleware,
+    authMiddleware,
     kidCafeController.findOne
 );
 

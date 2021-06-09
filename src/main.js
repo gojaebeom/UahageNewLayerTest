@@ -4,10 +4,11 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const database = require("./config/Database"); 
-const placeRouter = require("./router/Place.router");
-const pageRouter = require("./router/Page.router");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const placeRouter = require("./router/Place.router");
+const pageRouter = require("./router/Page.router");
+const userRouter = require("./router/User.router");
 
 require("./config/AwsS3");
 
@@ -47,6 +48,7 @@ app.use(cookieParser());
 //? Set Router : router 연결
 app.use(pageRouter);
 app.use(placeRouter);
+app.use(userRouter);
 
 //? AppListening : 8000 포트에서 서버 실행
 const PORT = process.env.APP_PORT || 8000;
